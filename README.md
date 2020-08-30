@@ -26,7 +26,7 @@ export DATABASE_URL="postgresql://postgres:password@127.0.0.1:5400/postgres"
 Ensure that PostgreSQL instance is running
 
 ```
-docker run -d -p 5400:5400 -e POSTGRES_PASSWORD=password postgres:12-alpine
+docker run -d -p 5400:5432 -e POSTGRES_PASSWORD=password postgres:12-alpine
 ```
 
 Sync the database with all migrations
