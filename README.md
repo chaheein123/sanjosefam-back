@@ -29,6 +29,12 @@ Ensure that PostgreSQL instance is running
 docker run -d -p 5400:5432 -e POSTGRES_PASSWORD=password postgres:12-alpine
 ```
 
+Ensure that Redis instance is running
+
+```
+docker run -d -p 6379:6379 redis:5-alpine
+```
+
 Sync the database with all migrations
 
 ```
