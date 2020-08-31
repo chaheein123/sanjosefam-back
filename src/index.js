@@ -32,19 +32,23 @@ const server = new ApolloServer({
 
 const app = express();
 
+app.set("trust proxy", 1); // trust first proxy
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     store: new RedisStore({
       client: redisClient,
+      name: "userSessionId",
       ttl: sessionDurationInSeconds,
     }), // One week
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
+      domain: process.env.DOMAIN,
       maxAge: 1000 * sessionDurationInSeconds, // One week
       secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
     },
   })
 );
