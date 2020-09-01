@@ -18,26 +18,28 @@ const signup = async (parent, args, context) => {
 };
 
 const login = async (parent, { email, password }, context) => {
-  const user = await context.prisma.user.findOne({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    throw new AuthError(`No user found for email: ${email}`);
-  }
-
   const { session } = context.req;
   let token;
+  let user;
 
   if (session && session.userId) {
-    if (user.id !== session.userId) {
-      throw new AuthError();
+    token = createAccessToken(session.userId);
+    user = await context.prisma.user.findOne({
+      where: {
+        id: session.userId,
+      },
+    });
+  } else {
+    user = await context.prisma.user.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new AuthError(`No user found for email: ${email}`);
     }
 
-    token = createAccessToken(user.id);
-  } else {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
