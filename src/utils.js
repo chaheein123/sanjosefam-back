@@ -28,14 +28,14 @@ function createAccessToken(userId) {
     },
     process.env.APP_SECRET,
     {
-      expiresIn: "3s",
+      expiresIn: process.env.ACCESS_TOKEN_DURATION || "8h",
     }
   );
 }
 
 class AuthError extends Error {
-  constructor() {
-    super("Unauthorized");
+  constructor(message) {
+    super(message || "Unauthorized");
   }
 }
 
